@@ -16,8 +16,9 @@ class SettingsPageState extends State<SettingsPage> {
   var _wlSumMax = "";
   var _wlRangeValues = const RangeValues(0.33, 0.8);
   var _exposuretime = "";
-  //var _integ = "";
-  //var _integTec = TextEditingController();
+  var _measureModeSel = MeasureMode.irradiance;
+  var _filterSel = FilterSpectralIntensityType.chlorophyllA;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -27,11 +28,8 @@ class SettingsPageState extends State<SettingsPage> {
     _wlSumMin = settings.sumRangeMin.toInt().toString();
     _wlSumMax = settings.sumRangeMax.toInt().toString();
     _wlRangeValues = RangeValues(settings.sumRangeMin / 1000.0, settings.sumRangeMax / 1000.0);
-    //_integ = settings.integ.toString();
     setState(() {
       _exposuretime = settings.deviceExposureTime;
-      //_integTec = TextEditingController(text: _integ);
-      //_integTec.selection = TextSelection.fromPosition(TextPosition(offset: _integ.length));
     });
   }
 
@@ -49,7 +47,6 @@ class SettingsPageState extends State<SettingsPage> {
         s.sumRangeMin = double.parse(_wlSumMin);
         s.sumRangeMax = double.parse(_wlSumMax);
         s.deviceExposureTime = _exposuretime;
-        //s.integ = int.parse(_integ.trim());
         Navigator.of(context).pop(s);
 
         return Future.value(false);
@@ -71,6 +68,35 @@ class SettingsPageState extends State<SettingsPage> {
         children: <Widget>[
           Column(
             children: [
+              Card(
+                    child: Column(
+                      children: <Widget>[
+                        const Text("測定モード"),
+                        RadioListTile(
+                            title: const Text("放射照度"),
+                            value: MeasureMode.irradiance,
+                            groupValue: _measureModeSel,
+                            onChanged: (value) => {
+                                  setState(() {
+                                    _measureModeSel = MeasureMode.irradiance;
+                                    _filterSel =
+                                        FilterSpectralIntensityType.none;
+                                  })
+                                }),
+                        RadioListTile(
+                            title: const Text("PPFD"),
+                            value: MeasureMode.ppfd,
+                            groupValue: _measureModeSel,
+                            onChanged: (value) => {
+                                  setState(() {
+                                    _measureModeSel = MeasureMode.ppfd;
+                                    _filterSel =
+                                        FilterSpectralIntensityType.none;
+                                  })
+                                }),
+                      ],
+                    ),
+                  ),
               Card(
                 child: Column(
                 children: <Widget>[
@@ -127,19 +153,6 @@ class SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               ),
-              // Card(
-              //   child: Column(
-              //   children: <Widget>[
-              //     const Text("時間積算"),
-              //     TextField(
-              //       controller: _integTec,
-              //       //textAlign: TextAlign.right,
-              //       keyboardType: TextInputType.number,
-              //       onChanged: (value) => _integ = value,
-              //     )
-              //   ]
-              //   ),
-              // ),
               Card(
                 child: Column(
                 children: <Widget>[

@@ -1,6 +1,3 @@
-import 'dart:collection';
-import 'dart:math';
-import 'package:flutter/services.dart' show rootBundle;
 import 'uvvisspec.dart';
 
 class PlantsSpecResult {

@@ -26,19 +26,30 @@ class ResultReport {
 //   Unit.photon : "photons/m2/s",
 //   Unit.mol : "umol/m2/s",
 // };
+enum MeasureMode { irradiance, ppfd }
+enum IntegrateLigthIntensityRange { all, uv, b, g, r, fr, vis, custom }
+enum FilterSpectralIntensityType { chlorophyllA, chlorophyllB, none }
+
+Map<FilterSpectralIntensityType, String> filterNameMap = {
+  FilterSpectralIntensityType.chlorophyllA: "クロロフィルA",
+  FilterSpectralIntensityType.chlorophyllB: "クロロフィルB",
+};
 
 class Settings {
-  double sumRangeMin = 330;
+  //Unit unit = Unit.w;
+  FilterSpectralIntensityType type = FilterSpectralIntensityType.none;
+  double sumRangeMin = 310;
   double sumRangeMax = 800;
   String deviceExposureTime = "AUTO";
-  int integ = 1;
+  MeasureMode measureMode = MeasureMode.irradiance;
+  IntegrateLigthIntensityRange integrateLigthIntensityRange = IntegrateLigthIntensityRange.all;
 }
 
-enum Unit {
-  w,
-  photon,
-  mol
-}
+// enum Unit {
+//   w,
+//   photon,
+//   mol
+// }
 
 class UVVisSpecResultConverter {
   Future<ResultReport> execute(Settings settings, UVVisSpecDeviceResult result) async {
