@@ -205,7 +205,11 @@ class HomeState extends State<Home> {
                   style: const TextStyle(fontSize: 18),
                 ),
                 Text(
-                  _irradiance.toStringAsExponential(3),
+                  _irradiance * 1000 < 1
+                    ? _irradiance.toStringAsExponential(3)
+                    : _irradiance > 1000
+                        ? _irradiance.toStringAsExponential(3)
+                        : _irradiance.toStringAsPrecision(4),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 36,
@@ -230,7 +234,11 @@ class HomeState extends State<Home> {
                   ),
                 ),
                 Text(
-                  _peekPower.toStringAsExponential(3),
+                  _peekPower * 1000 < 1
+                    ? _peekPower.toStringAsExponential(3)
+                    : _peekPower > 1000
+                        ? _peekPower.toStringAsExponential(3)
+                        : _peekPower.toStringAsPrecision(4),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 28,
