@@ -8,18 +8,18 @@ class SettingsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return SettingsPageState();
-  }}
+  }
+}
 
 class SettingsPageState extends State<SettingsPage> {
-
   var _wlSumMin = "";
   var _wlSumMax = "";
   var _wlRangeValues = const RangeValues(0.33, 0.8);
   var _exposuretime = "";
   var _measureModeSel = MeasureMode.irradiance;
-  var _filterSel = FilterSpectralIntensityType.chlorophyllA;
+  //var _filterSel = FilterSpectralIntensityType.chlorophyllA;
   var _integrateRangeSel = IntegrateLigthIntensityRange.all;
-
+  var _unitSel = Unit.w;
   @override
   void initState() {
     // TODO: implement initState
@@ -28,9 +28,13 @@ class SettingsPageState extends State<SettingsPage> {
     final settings = widget.settings;
     _wlSumMin = settings.sumRangeMin.toInt().toString();
     _wlSumMax = settings.sumRangeMax.toInt().toString();
-    _wlRangeValues = RangeValues(settings.sumRangeMin / 1000.0, settings.sumRangeMax / 1000.0);
+    _wlRangeValues = RangeValues(
+        settings.sumRangeMin / 1000.0, settings.sumRangeMax / 1000.0);
     setState(() {
       _exposuretime = settings.deviceExposureTime;
+      _measureModeSel = settings.measureMode;
+      _integrateRangeSel = settings.integrateLigthIntensityRange;
+      _unitSel = settings.unit;
     });
   }
 
@@ -48,28 +52,29 @@ class SettingsPageState extends State<SettingsPage> {
         s.sumRangeMin = double.parse(_wlSumMin);
         s.sumRangeMax = double.parse(_wlSumMax);
         s.deviceExposureTime = _exposuretime;
+        s.measureMode = _measureModeSel;
+        s.integrateLigthIntensityRange = _integrateRangeSel;
+        s.unit = _unitSel;
         Navigator.of(context).pop(s);
 
         return Future.value(false);
       },
-      child : Scaffold(
-      appBar: AppBar(
-        title: const Text('設定'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => {
-              
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-        children: <Widget>[
-          Column(
-            children: [
-              Card(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('設定'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () => {},
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Column(
+                children: [
+                  Card(
                     child: Column(
                       children: <Widget>[
                         const Text("測定モード"),
@@ -80,8 +85,9 @@ class SettingsPageState extends State<SettingsPage> {
                             onChanged: (value) => {
                                   setState(() {
                                     _measureModeSel = MeasureMode.irradiance;
-                                    _filterSel =
-                                        FilterSpectralIntensityType.none;
+                                    _unitSel = Unit.w;
+                                    // _filterSel =
+                                    //     FilterSpectralIntensityType.none;
                                   })
                                 }),
                         RadioListTile(
@@ -91,14 +97,15 @@ class SettingsPageState extends State<SettingsPage> {
                             onChanged: (value) => {
                                   setState(() {
                                     _measureModeSel = MeasureMode.ppfd;
-                                    _filterSel =
-                                        FilterSpectralIntensityType.none;
+                                    _unitSel = Unit.mol;
+                                    // _filterSel =
+                                    //     FilterSpectralIntensityType.none;
                                   })
                                 }),
                       ],
                     ),
                   ),
-              Card(
+                  Card(
                     child: Column(
                       children: <Widget>[
                         const Text("測定波長範囲"),
@@ -334,25 +341,25 @@ class SettingsPageState extends State<SettingsPage> {
                       ],
                     ),
                   ),
-                        
-              // Card(
-              //   child: Column(
-              //   children: <Widget>[
-              //     const Text("露光時間"),
-              // RadioListTile(title: const Text("AUTO"), value: "AUTO", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
-              // RadioListTile(title: const Text("100us"), value: "100us", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
-              // RadioListTile(title: const Text("1ms"), value: "1ms", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
-              // RadioListTile(title: const Text("10ms"), value: "10ms", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
-              // RadioListTile(title: const Text("100ms"), value: "100ms", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
-              //   ],
-              // ),
-              // ),
-              ],
-          )
-        ],
+
+                  // Card(
+                  //   child: Column(
+                  //   children: <Widget>[
+                  //     const Text("露光時間"),
+                  // RadioListTile(title: const Text("AUTO"), value: "AUTO", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
+                  // RadioListTile(title: const Text("100us"), value: "100us", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
+                  // RadioListTile(title: const Text("1ms"), value: "1ms", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
+                  // RadioListTile(title: const Text("10ms"), value: "10ms", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
+                  // RadioListTile(title: const Text("100ms"), value: "100ms", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
+                  //   ],
+                  // ),
+                  // ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
-      ),
-    ),
     );
   }
 }
