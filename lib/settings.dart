@@ -112,12 +112,12 @@ class SettingsPageState extends State<SettingsPage> {
                         Column(
                           children: <Widget>[
                             RadioListTile(
-                              title: const Text("310-800nm"),
+                              title: const Text("330-800nm"),
                               value: IntegrateLigthIntensityRange.all,
                               groupValue: _integrateRangeSel,
                               onChanged: (value) {
                                 setState(() {
-                                  _wlRangeValues = const RangeValues(0.31, 0.8);
+                                  _wlRangeValues = const RangeValues(0.33, 0.8);
                                   _wlSumMin = (_wlRangeValues.start * 1000)
                                       .toInt()
                                       .toString();
@@ -148,12 +148,12 @@ class SettingsPageState extends State<SettingsPage> {
                               },
                             ),
                             RadioListTile(
-                              title: const Text("310-400nm (UV)"),
+                              title: const Text("330-400nm (UV)"),
                               value: IntegrateLigthIntensityRange.uv,
                               groupValue: _integrateRangeSel,
                               onChanged: (value) {
                                 setState(() {
-                                  _wlRangeValues = const RangeValues(0.31, 0.4);
+                                  _wlRangeValues = const RangeValues(0.33, 0.4);
                                   _wlSumMin = (_wlRangeValues.start * 1000)
                                       .toInt()
                                       .toString();
