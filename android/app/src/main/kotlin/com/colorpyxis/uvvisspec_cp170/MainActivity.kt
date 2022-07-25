@@ -1,4 +1,4 @@
-package com.colorpyxis.uvvisspec_app
+package com.colorpyxis.uvvisspec_cp170
 
 import io.flutter.embedding.android.FlutterActivity
 
