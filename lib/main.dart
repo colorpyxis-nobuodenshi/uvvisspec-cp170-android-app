@@ -134,19 +134,23 @@ class HomeState extends State<Home> {
         integratedLightIntensityLabel = "光量子束密度";
         break;
     }
-    if (_settings.sumRangeMin == 310 && _settings.sumRangeMax == 800) {
-    } else if (_settings.sumRangeMin == 310 && _settings.sumRangeMax == 400) {
+    if (_settings.integrateLigthIntensityRange == IntegrateLigthIntensityRange.all) {
+    } else if (_settings.integrateLigthIntensityRange == IntegrateLigthIntensityRange.uv) {
       integratedLightIntensityLabel += " 310 - 400 nm (UV)";
-    } else if (_settings.sumRangeMin == 400 && _settings.sumRangeMax == 500) {
+    } else if (_settings.integrateLigthIntensityRange == IntegrateLigthIntensityRange.b) {
       integratedLightIntensityLabel += " 400 - 500 nm (B)";
-    } else if (_settings.sumRangeMin == 500 && _settings.sumRangeMax == 600) {
+    } else if (_settings.integrateLigthIntensityRange == IntegrateLigthIntensityRange.g) {
       integratedLightIntensityLabel += " 500 - 600 nm (G)";
-    } else if (_settings.sumRangeMin == 600 && _settings.sumRangeMax == 700) {
+    } else if (_settings.integrateLigthIntensityRange == IntegrateLigthIntensityRange.r) {
       integratedLightIntensityLabel += " 600 - 700 nm (R)";
-    } else if (_settings.sumRangeMin == 700 && _settings.sumRangeMax == 800) {
+    } else if (_settings.integrateLigthIntensityRange == IntegrateLigthIntensityRange.fr) {
       integratedLightIntensityLabel += " 700 - 800 nm (FR)";
-    } else if (_settings.sumRangeMin == 400 && _settings.sumRangeMax == 700) {
+    } else if (_settings.integrateLigthIntensityRange == IntegrateLigthIntensityRange.vis) {
       integratedLightIntensityLabel += " 400 - 700 nm";
+    } else if (_settings.integrateLigthIntensityRange == IntegrateLigthIntensityRange.br) {
+      integratedLightIntensityLabel += " B / R";
+    } else if (_settings.integrateLigthIntensityRange == IntegrateLigthIntensityRange.rfr) {
+      integratedLightIntensityLabel += " R / FR";
     } else {
       integratedLightIntensityLabel += " (" +
           _settings.sumRangeMin.toInt().toString() +

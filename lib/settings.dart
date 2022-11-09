@@ -238,6 +238,42 @@ class SettingsPageState extends State<SettingsPage> {
                               },
                             ),
                             RadioListTile(
+                              title: const Text("B/R"),
+                              value: IntegrateLigthIntensityRange.fr,
+                              groupValue: _integrateRangeSel,
+                              onChanged: (value) {
+                                setState(() {
+                                  _wlRangeValues = const RangeValues(0.33, 0.8);
+                                  _wlSumMin = (_wlRangeValues.start * 1000)
+                                      .toInt()
+                                      .toString();
+                                  _wlSumMax = (_wlRangeValues.end * 1000)
+                                      .toInt()
+                                      .toString();
+                                  _integrateRangeSel =
+                                      IntegrateLigthIntensityRange.br;
+                                });
+                              },
+                            ),
+                            RadioListTile(
+                              title: const Text("R/FR"),
+                              value: IntegrateLigthIntensityRange.rfr,
+                              groupValue: _integrateRangeSel,
+                              onChanged: (value) {
+                                setState(() {
+                                  _wlRangeValues = const RangeValues(0.33, 0.8);
+                                  _wlSumMin = (_wlRangeValues.start * 1000)
+                                      .toInt()
+                                      .toString();
+                                  _wlSumMax = (_wlRangeValues.end * 1000)
+                                      .toInt()
+                                      .toString();
+                                  _integrateRangeSel =
+                                      IntegrateLigthIntensityRange.fr;
+                                });
+                              },
+                            ),
+                            RadioListTile(
                               title: const Text("カスタム"),
                               value: IntegrateLigthIntensityRange.custom,
                               groupValue: _integrateRangeSel,

@@ -28,7 +28,7 @@ Map<Unit, String> unitMap = {
   Unit.mol: "\u00B5mol\u2219m\u207B\u00B2\u2219S\u207B\u00B9",
 };
 enum MeasureMode { irradiance, ppfd }
-enum IntegrateLigthIntensityRange { all, uv, b, g, r, fr, vis, custom }
+enum IntegrateLigthIntensityRange { all, uv, b, g, r, fr, vis, br, rfr, custom }
 enum FilterSpectralIntensityType { chlorophyllA, chlorophyllB, none }
 
 Map<FilterSpectralIntensityType, String> filterNameMap = {

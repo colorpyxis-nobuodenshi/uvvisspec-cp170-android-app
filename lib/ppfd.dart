@@ -10,6 +10,8 @@ class PlantsSpecResult {
   double pfdB = 0.0; //400-500
   double pfdIr = 0.0; //700-800
   double pfd = 0.0;
+  double brRatio = 0.0; //B/R
+  double rfrRatio = 0.0; // R/FR
 }
 
 class UVVisSpecResultConverterForPlants {
@@ -21,6 +23,8 @@ class UVVisSpecResultConverterForPlants {
     double pfdB = 0.0; //400-500
     double pfdIr = 0.0; //700-800
     double pfd = 0.0;
+    double brRatio = 0.0; //B/R
+    double rfrRatio = 0.0; // R/FR
 
     var wl = [...uvsr.wl];
     var sp = [...uvsr.sp];
@@ -49,6 +53,9 @@ class UVVisSpecResultConverterForPlants {
       }
     }
 
+    brRatio = pfdB / pfdR;
+    rfrRatio = pfdR / pfdIr;
+
     PlantsSpecResult psr = PlantsSpecResult();
     psr.ppfd = ppfd;
     psr.pfd = pfd;
@@ -59,6 +66,8 @@ class UVVisSpecResultConverterForPlants {
     psr.pfdIr = pfdIr;
     psr.sp = sp2;
     psr.wl = wl;
+    psr.brRatio = brRatio;
+    psr.rfrRatio = rfrRatio;
 
     return psr;
   }
