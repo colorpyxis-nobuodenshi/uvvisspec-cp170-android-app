@@ -239,7 +239,7 @@ class SettingsPageState extends State<SettingsPage> {
                             ),
                             RadioListTile(
                               title: const Text("B/R"),
-                              value: IntegrateLigthIntensityRange.fr,
+                              value: IntegrateLigthIntensityRange.br,
                               groupValue: _integrateRangeSel,
                               onChanged: (value) {
                                 setState(() {
@@ -269,7 +269,7 @@ class SettingsPageState extends State<SettingsPage> {
                                       .toInt()
                                       .toString();
                                   _integrateRangeSel =
-                                      IntegrateLigthIntensityRange.fr;
+                                      IntegrateLigthIntensityRange.rfr;
                                 });
                               },
                             ),
