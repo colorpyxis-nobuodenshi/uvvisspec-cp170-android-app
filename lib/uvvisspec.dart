@@ -39,7 +39,7 @@ Map<FilterSpectralIntensityType, String> filterNameMap = {
 class Settings {
   Unit unit = Unit.w;
   FilterSpectralIntensityType type = FilterSpectralIntensityType.none;
-  double sumRangeMin = 310;
+  double sumRangeMin = 330;
   double sumRangeMax = 800;
   String deviceExposureTime = "AUTO";
   MeasureMode measureMode = MeasureMode.irradiance;
