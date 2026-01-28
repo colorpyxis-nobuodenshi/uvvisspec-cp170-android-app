@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:rxdart/rxdart.dart';
 import 'package:usb_serial/usb_serial.dart';
 import 'package:usb_serial/transaction.dart';
+import 'package:uvvisspec_app/ppfd.dart';
 
 //
 class ResultReport {
@@ -19,6 +20,8 @@ class ResultReport {
   double wlRangeMax = 800;
   String measureDatetime = "";
   String unit = "";
+  MeasureMode mode = MeasureMode.irradiance;
+  PlantsSpecResult plantsSpecResult = PlantsSpecResult();
 }
 
 enum Unit { w, photon, mol }
@@ -50,12 +53,52 @@ class Settings {
 class UVVisSpecResultConverter {
   Future<ResultReport> execute(
       Settings settings, UVVisSpecDeviceResult result) async {
+    
     var report = ResultReport();
+    final ppfd = await UVVisSpecResultConverterForPlants().convert(result);
 
-    final wl = [...result.wl];
-    var sp = [...result.sp];
+    if(settings.measureMode == MeasureMode.irradiance) {
+      final mode = settings.measureMode;
+      final wl = [...result.wl];
+      var sp = [...result.sp];
 
-    var sp2 = [...sp];
+      var sp2 = [...sp];
+      final l1 = settings.sumRangeMin;
+      final l2 = settings.sumRangeMax;
+      for (var i = 0; i < wl.length; i++) {
+        if (wl[i] < l1) {
+          sp[i] = 0;
+        }
+        if (wl[i] > l2) {
+          sp[i] = 0;
+        }
+      }
+      var pp = sp.reduce(max);
+      var pwl = wl[sp.indexWhere((x) => (x == pp))];
+      var ir = 0.0;
+
+      for (var i = 0; i < wl.length; i++) {
+        ir += sp[i];
+      }
+
+      report.sp = sp2;
+      report.wl = wl;
+      report.ir = ir;
+      report.pp = pp;
+      report.pwl = pwl;
+      report.wlRangeMin = l1;
+      report.wlRangeMax = l2;
+      report.mode = mode;
+      report.plantsSpecResult = ppfd;
+
+      return report;
+    }
+
+    final mode = settings.measureMode;
+    final wl = [...ppfd.wl];
+    var sp = [...ppfd.sp];
+
+    var sp2 = [...ppfd.sp];
     final l1 = settings.sumRangeMin;
     final l2 = settings.sumRangeMax;
     for (var i = 0; i < wl.length; i++) {
@@ -81,6 +124,8 @@ class UVVisSpecResultConverter {
     report.pwl = pwl;
     report.wlRangeMin = l1;
     report.wlRangeMax = l2;
+    report.mode = mode;
+    report.plantsSpecResult = ppfd;
 
     return report;
   }

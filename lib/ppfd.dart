@@ -28,10 +28,11 @@ class UVVisSpecResultConverterForPlants {
 
     var wl = [...uvsr.wl];
     var sp = [...uvsr.sp];
-    var sp2 = List.generate(sp.length, (index) => 1.0);
+    var sp2 = List.generate(sp.length, (index) => 0.0);
 
     for (var i = 0; i < wl.length; i++) {
-      var p = sp[i] * wl[i] / 0.1237 * 10E-3;
+      var p = sp[i] * wl[i] * 8.36E-3;
+      sp2[i] = p;
       pfd += p;
       if (wl[i] >= 400 && wl[i] <= 700) {
         ppfd += p;
@@ -53,8 +54,8 @@ class UVVisSpecResultConverterForPlants {
       }
     }
 
-    brRatio = pfdB / pfdR;
-    rfrRatio = pfdR / pfdIr;
+    brRatio = pfdR == 0 ? 0 : pfdB / pfdR;
+    rfrRatio = pfdIr == 0 ? 0 : pfdR / pfdIr;
 
     PlantsSpecResult psr = PlantsSpecResult();
     psr.ppfd = ppfd;

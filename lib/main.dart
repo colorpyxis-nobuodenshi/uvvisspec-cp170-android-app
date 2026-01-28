@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:uvvisspec_app/ppfd.dart';
+import 'package:rxdart/rxdart.dart';
 import 'uvvisspec.dart';
 import 'settings.dart';
 import 'result_storage.dart';
@@ -41,6 +43,7 @@ class HomeState extends State<Home> {
   var _peekWavelength = 0.0;
   var _irradiance = 0.0;
   var _unit = "W\u2219m\u207B\u00B2";
+  late PlantsSpecResult _ppfd = PlantsSpecResult();
 
   late List<double> _spectralData = List.generate(50, (index) => 1.0);
   late List<double> _spectralWl = List.generate(50, (index) => 0.0);
@@ -104,6 +107,7 @@ class HomeState extends State<Home> {
         _irradiance = ir1;
         _peekWavelength = pwl1;
         _peekPower = pp1;
+        _ppfd = _currentResult.plantsSpecResult;
       });
     });
 
@@ -158,39 +162,10 @@ class HomeState extends State<Home> {
           _settings.sumRangeMax.toInt().toString() +
           " nm)";
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('植物用分光放射照度計CP170'),
-        actions: <Widget>[
-          //(_connected) ? const Icon(Icons.check_circle_outline) : const Icon(Icons.highlight_off_outlined),
-          (_showWarning) ? const Icon(Icons.warning) : const SizedBox.shrink(),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () async {
-              await device.measStop();
-              var prevExp = _settings.deviceExposureTime;
-              _settings = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SettingsPage(_settings)));
 
-              setState(() {
-                _unit = unitMap[_settings.unit]!;
-              });
-
-              if (_settings.deviceExposureTime != prevExp) {
-                await device.changeExposureTime(_settings.deviceExposureTime);
-              }
-
-              await device.measStart();
-            },
-          ),
-        ],
-      ),
-      body: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
-              Widget>[
-        SizedBox(
+    var container1 = Row(
+      children: [
+      SizedBox(
             width: 700,
             height: 250,
             child: Card(
@@ -280,6 +255,400 @@ class HomeState extends State<Home> {
             ),
           ),
         ),
+    ]);
+    var container2 = [
+      SizedBox(
+          height: 90,
+          width: 700,
+          child: Card(
+            child: Column(
+              children: <Widget>[
+                const Text(
+                  "PPFD",
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  _peekPower * 1000 < 1
+                    ? _peekPower.toStringAsExponential(3)
+                    : _peekPower > 1000
+                        ? _peekPower.toStringAsExponential(3)
+                        : _peekPower.toStringAsPrecision(4),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                    color: Colors.blue.shade600,
+                  ),
+                ),
+                Text(_unit + "\u2219nm\u207B\u00B9",
+                    style: const TextStyle(fontSize: 16)),
+              ],
+            ),
+          ),
+        ),
+    ];
+    var container = Column(
+      children: [
+        SizedBox(
+            width: 700,
+            height: 150,
+            child: Card(
+              child: SpectralLineChart.create(_spectralWl, _spectralData,
+                  _settings.sumRangeMin, _settings.sumRangeMax),
+            )),
+        SizedBox(
+        height: 90,
+        width: 700,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              const Text(
+                "PPFD",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                _ppfd.ppfd.toStringAsPrecision(4),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                  color: Colors.blue.shade600,
+                ),
+              ),
+              Text(_unit,
+                  style: const TextStyle(fontSize: 16)),
+            ],
+          ),
+        ),
+      ),
+      Row(children: [
+SizedBox(
+        height: 90,
+        width: 120,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              const Text(
+                "PPFD-UV",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                _ppfd.pfdUv.toStringAsPrecision(4),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                  color: Colors.blue.shade600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 90,
+        width: 120,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              const Text(
+                "PPFD-B",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                _ppfd.pfdB.toStringAsPrecision(4),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                  color: Colors.blue.shade600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 90,
+        width: 120,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              const Text(
+                "PPFD-G",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                _peekPower.toStringAsPrecision(4),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                  color: Colors.blue.shade600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      ],),  
+      Row(children: [
+SizedBox(
+        height: 90,
+        width: 120,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              const Text(
+                "PPFD-R",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                _ppfd.pfdR.toStringAsPrecision(4),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                  color: Colors.blue.shade600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 90,
+        width: 120,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              const Text(
+                "PPFD-FR",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                _ppfd.pfdIr.toStringAsPrecision(4),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                  color: Colors.blue.shade600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 90,
+        width: 120,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              const Text(
+                "PFD",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                _ppfd.pfd.toStringAsPrecision(4),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                  color: Colors.blue.shade600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      ],
+      ),
+      Row(children: [
+SizedBox(
+        height: 90,
+        width: 120,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              const Text(
+                "B/R",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                _ppfd.brRatio.toStringAsPrecision(4),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                  color: Colors.blue.shade600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 90,
+        width: 120,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              const Text(
+                "R/FR",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                _ppfd.rfrRatio.toStringAsPrecision(4),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                  color: Colors.blue.shade600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      ],
+      ),
+      
+      ],
+    );
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('植物用分光放射照度計CP170'),
+        actions: <Widget>[
+          //(_connected) ? const Icon(Icons.check_circle_outline) : const Icon(Icons.highlight_off_outlined),
+          (_showWarning) ? const Icon(Icons.warning) : const SizedBox.shrink(),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () async {
+              await device.measStop();
+              var prevExp = _settings.deviceExposureTime;
+              _settings = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SettingsPage(_settings)));
+
+              setState(() {
+                _unit = unitMap[_settings.unit]!;
+              });
+
+              if (_settings.deviceExposureTime != prevExp) {
+                await device.changeExposureTime(_settings.deviceExposureTime);
+              }
+
+              await device.measStart();
+            },
+          ),
+        ],
+      ),
+      body: Center(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
+              Widget>[
+                container,
+        // SizedBox(
+        //     width: 700,
+        //     height: 250,
+        //     child: Card(
+        //       child: SpectralLineChart.create(_spectralWl, _spectralData,
+        //           _settings.sumRangeMin, _settings.sumRangeMax),
+        //     )),
+        // SizedBox(
+        //   height: 120,
+        //   width: 700,
+        //   child: Card(
+        //     child: Column(
+        //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //       children: <Widget>[
+        //         Text(
+        //           integratedLightIntensityLabel,
+        //           style: const TextStyle(fontSize: 18),
+        //         ),
+        //         Text(
+        //           _irradiance * 1000 < 1
+        //             ? _irradiance.toStringAsExponential(3)
+        //             : _irradiance > 1000
+        //                 ? _irradiance.toStringAsExponential(3)
+        //                 : _irradiance.toStringAsPrecision(4),
+        //           style: TextStyle(
+        //             fontWeight: FontWeight.bold,
+        //             fontSize: 36,
+        //             color: Colors.blue.shade600,
+        //           ),
+        //         ),
+        //         Text(_unit, style: const TextStyle(fontSize: 18)),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: 90,
+        //   width: 700,
+        //   child: Card(
+        //     child: Column(
+        //       children: <Widget>[
+        //         const Text(
+        //           "ピーク光強度",
+        //           style: TextStyle(
+        //             fontSize: 16,
+        //           ),
+        //         ),
+        //         Text(
+        //           _peekPower * 1000 < 1
+        //             ? _peekPower.toStringAsExponential(3)
+        //             : _peekPower > 1000
+        //                 ? _peekPower.toStringAsExponential(3)
+        //                 : _peekPower.toStringAsPrecision(4),
+        //           style: TextStyle(
+        //             fontWeight: FontWeight.bold,
+        //             fontSize: 28,
+        //             color: Colors.blue.shade600,
+        //           ),
+        //         ),
+        //         Text(_unit + "\u2219nm\u207B\u00B9",
+        //             style: const TextStyle(fontSize: 16)),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: 90,
+        //   width: 700,
+        //   child: Card(
+        //     child: Column(
+        //       children: <Widget>[
+        //         const Text(
+        //           "ピーク波長",
+        //           style: TextStyle(
+        //             fontSize: 16,
+        //           ),
+        //         ),
+        //         Text(
+        //           _peekWavelength.toStringAsFixed(0),
+        //           style: TextStyle(
+        //             fontWeight: FontWeight.bold,
+        //             fontSize: 28,
+        //             color: Colors.blue.shade600,
+        //           ),
+        //         ),
+        //         const Text("nm", style: TextStyle(fontSize: 16)),
+        //       ],
+        //     ),
+        //   ),
+        // ),
         Container(
           margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Row(

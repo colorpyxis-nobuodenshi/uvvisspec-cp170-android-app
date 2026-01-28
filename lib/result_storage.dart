@@ -18,8 +18,11 @@ class ResultStorage {
       final mdt = result.measureDatetime;
       final pp = result.pp;
       final pw = result.pwl;
-      await file.writeAsString('測定日, $mdt\r\n', mode: FileMode.append);
-      await file.writeAsString('波長[nm], 放射照度[W/m^-2]\r\n',
+      final unit = result.mode == MeasureMode.irradiance
+          ? "\uFEFF放射照度[W・m^-2]"
+          : "\uFEFF光量子束密度[μmol・m^-2・S^-1]";
+      await file.writeAsString('\uFEFF測定日, $mdt\r\n', mode: FileMode.append);
+      await file.writeAsString('\uFEFF波長[nm], $unit\r\n',
           mode: FileMode.append);
       for (var i = 0; i < len; i++) {
         final v1 = wl[i];
