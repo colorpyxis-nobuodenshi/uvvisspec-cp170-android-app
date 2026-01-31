@@ -86,6 +86,14 @@ class SettingsPageState extends State<SettingsPage> {
                                   setState(() {
                                     _measureModeSel = MeasureMode.irradiance;
                                     _unitSel = Unit.w;
+                                    _integrateRangeSel = IntegrateLigthIntensityRange.all;
+                                    _wlRangeValues = const RangeValues(0.33, 0.8);
+                                    _wlSumMin = (_wlRangeValues.start * 1000)
+                                        .toInt()
+                                        .toString();
+                                    _wlSumMax = (_wlRangeValues.end * 1000)
+                                        .toInt()
+                                        .toString();
                                     // _filterSel =
                                     //     FilterSpectralIntensityType.none;
                                   })
@@ -98,6 +106,17 @@ class SettingsPageState extends State<SettingsPage> {
                                   setState(() {
                                     _measureModeSel = MeasureMode.ppfd;
                                     _unitSel = Unit.mol;
+                                    _integrateRangeSel = IntegrateLigthIntensityRange.custom;
+                                    _wlRangeValues =
+                                                  const RangeValues(0.33, 0.8);
+                                    _wlSumMin =
+                                        (_wlRangeValues.start * 1000)
+                                            .toInt()
+                                            .toString();
+                                    _wlSumMax =
+                                        (_wlRangeValues.end * 1000)
+                                            .toInt()
+                                            .toString();
                                     // _filterSel =
                                     //     FilterSpectralIntensityType.none;
                                   })
@@ -111,7 +130,9 @@ class SettingsPageState extends State<SettingsPage> {
                         const Text("測定波長範囲"),
                         Column(
                           children: <Widget>[
-                            RadioListTile(
+                             Visibility(
+                                visible: _measureModeSel == MeasureMode.irradiance,
+                            child : RadioListTile(
                               title: const Text("330-800nm"),
                               value: IntegrateLigthIntensityRange.all,
                               groupValue: _integrateRangeSel,
@@ -128,151 +149,7 @@ class SettingsPageState extends State<SettingsPage> {
                                       IntegrateLigthIntensityRange.all;
                                 });
                               },
-                            ),
-                            RadioListTile(
-                              title: const Text("400-700nm (VIS・PAR・PPFD)"),
-                              value: IntegrateLigthIntensityRange.vis,
-                              groupValue: _integrateRangeSel,
-                              onChanged: (value) {
-                                setState(() {
-                                  _wlRangeValues = const RangeValues(0.4, 0.7);
-                                  _wlSumMin = (_wlRangeValues.start * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _wlSumMax = (_wlRangeValues.end * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _integrateRangeSel =
-                                      IntegrateLigthIntensityRange.vis;
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: const Text("330-400nm (UV)"),
-                              value: IntegrateLigthIntensityRange.uv,
-                              groupValue: _integrateRangeSel,
-                              onChanged: (value) {
-                                setState(() {
-                                  _wlRangeValues = const RangeValues(0.33, 0.4);
-                                  _wlSumMin = (_wlRangeValues.start * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _wlSumMax = (_wlRangeValues.end * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _integrateRangeSel =
-                                      IntegrateLigthIntensityRange.uv;
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: const Text("400-500nm (B)"),
-                              value: IntegrateLigthIntensityRange.b,
-                              groupValue: _integrateRangeSel,
-                              onChanged: (value) {
-                                setState(() {
-                                  _wlRangeValues = const RangeValues(0.4, 0.5);
-                                  _wlSumMin = (_wlRangeValues.start * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _wlSumMax = (_wlRangeValues.end * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _integrateRangeSel =
-                                      IntegrateLigthIntensityRange.b;
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: const Text("500-600nm (G)"),
-                              value: IntegrateLigthIntensityRange.g,
-                              groupValue: _integrateRangeSel,
-                              onChanged: (value) {
-                                setState(() {
-                                  _wlRangeValues = const RangeValues(0.5, 0.6);
-                                  _wlSumMin = (_wlRangeValues.start * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _wlSumMax = (_wlRangeValues.end * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _integrateRangeSel =
-                                      IntegrateLigthIntensityRange.g;
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: const Text("600-700nm (R)"),
-                              value: IntegrateLigthIntensityRange.r,
-                              groupValue: _integrateRangeSel,
-                              onChanged: (value) {
-                                setState(() {
-                                  _wlRangeValues = const RangeValues(0.6, 0.7);
-                                  _wlSumMin = (_wlRangeValues.start * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _wlSumMax = (_wlRangeValues.end * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _integrateRangeSel =
-                                      IntegrateLigthIntensityRange.r;
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: const Text("700-800nm（FR)"),
-                              value: IntegrateLigthIntensityRange.fr,
-                              groupValue: _integrateRangeSel,
-                              onChanged: (value) {
-                                setState(() {
-                                  _wlRangeValues = const RangeValues(0.7, 0.8);
-                                  _wlSumMin = (_wlRangeValues.start * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _wlSumMax = (_wlRangeValues.end * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _integrateRangeSel =
-                                      IntegrateLigthIntensityRange.fr;
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: const Text("B/R"),
-                              value: IntegrateLigthIntensityRange.br,
-                              groupValue: _integrateRangeSel,
-                              onChanged: (value) {
-                                setState(() {
-                                  _wlRangeValues = const RangeValues(0.33, 0.8);
-                                  _wlSumMin = (_wlRangeValues.start * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _wlSumMax = (_wlRangeValues.end * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _integrateRangeSel =
-                                      IntegrateLigthIntensityRange.br;
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: const Text("R/FR"),
-                              value: IntegrateLigthIntensityRange.rfr,
-                              groupValue: _integrateRangeSel,
-                              onChanged: (value) {
-                                setState(() {
-                                  _wlRangeValues = const RangeValues(0.33, 0.8);
-                                  _wlSumMin = (_wlRangeValues.start * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _wlSumMax = (_wlRangeValues.end * 1000)
-                                      .toInt()
-                                      .toString();
-                                  _integrateRangeSel =
-                                      IntegrateLigthIntensityRange.rfr;
-                                });
-                              },
-                            ),
+                            )),
                             RadioListTile(
                               title: const Text("カスタム"),
                               value: IntegrateLigthIntensityRange.custom,
@@ -314,7 +191,7 @@ class SettingsPageState extends State<SettingsPage> {
                                           onPressed: () {
                                             setState(() {
                                               _wlRangeValues =
-                                                  const RangeValues(0.31, 0.8);
+                                                  const RangeValues(0.33, 0.8);
                                               _wlSumMin =
                                                   (_wlRangeValues.start * 1000)
                                                       .toInt()
@@ -345,30 +222,23 @@ class SettingsPageState extends State<SettingsPage> {
                                       //width: 230,
                                       child: RangeSlider(
                                         values: _wlRangeValues,
-                                        activeColor: Colors.blueGrey,
-                                        inactiveColor: Colors.blueGrey.shade800,
+                                        min: 330,
+                                        max: 800,
+                                        divisions: ((800 - 330) ~/ 10), // 10nm刻み
+                                        labels: RangeLabels(
+                                          _wlRangeValues.start.round().toString(),
+                                          _wlRangeValues.end.round().toString(),
+                                        ),
                                         onChanged: (values) {
-                                          if (_integrateRangeSel !=
-                                              IntegrateLigthIntensityRange
-                                                  .custom) {
-                                            return;
-                                          }
                                           setState(() {
                                             _wlRangeValues = values;
-                                            _wlSumMin =
-                                                (_wlRangeValues.start * 1000)
-                                                    .toInt()
-                                                    .toString();
-                                            _wlSumMax =
-                                                (_wlRangeValues.end * 1000)
-                                                    .toInt()
-                                                    .toString();
+                                            _wlSumMin = _wlRangeValues.start.round().toString();
+                                            _wlSumMax = _wlRangeValues.end.round().toString();
                                           });
                                         },
-                                        min: 0.31,
-                                        max: 0.8,
-                                        divisions: 49,
-                                      ),
+                                        activeColor: Colors.blueGrey,
+                                        inactiveColor: Colors.blueGrey.shade800,
+                                      )
                                     ),
                                   ],
                                 )),
@@ -377,19 +247,6 @@ class SettingsPageState extends State<SettingsPage> {
                       ],
                     ),
                   ),
-
-                  // Card(
-                  //   child: Column(
-                  //   children: <Widget>[
-                  //     const Text("露光時間"),
-                  // RadioListTile(title: const Text("AUTO"), value: "AUTO", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
-                  // RadioListTile(title: const Text("100us"), value: "100us", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
-                  // RadioListTile(title: const Text("1ms"), value: "1ms", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
-                  // RadioListTile(title: const Text("10ms"), value: "10ms", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
-                  // RadioListTile(title: const Text("100ms"), value: "100ms", groupValue: _exposuretime, onChanged: (value) => { setState(()=>{_exposuretime = value.toString()})}),
-                  //   ],
-                  // ),
-                  // ),
                    Card(
                 child: ListTile(
                   title: const Text("このアプリの情報について"),

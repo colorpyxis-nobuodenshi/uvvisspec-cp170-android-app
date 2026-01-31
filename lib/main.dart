@@ -163,7 +163,7 @@ class HomeState extends State<Home> {
           " nm)";
     }
 
-    var container1 = Row(
+    var container1 = Column(
       children: [
       SizedBox(
             width: 700,
@@ -256,43 +256,12 @@ class HomeState extends State<Home> {
           ),
         ),
     ]);
-    var container2 = [
-      SizedBox(
-          height: 90,
-          width: 700,
-          child: Card(
-            child: Column(
-              children: <Widget>[
-                const Text(
-                  "PPFD",
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  _peekPower * 1000 < 1
-                    ? _peekPower.toStringAsExponential(3)
-                    : _peekPower > 1000
-                        ? _peekPower.toStringAsExponential(3)
-                        : _peekPower.toStringAsPrecision(4),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                    color: Colors.blue.shade600,
-                  ),
-                ),
-                Text(_unit + "\u2219nm\u207B\u00B9",
-                    style: const TextStyle(fontSize: 16)),
-              ],
-            ),
-          ),
-        ),
-    ];
-    var container = Column(
+    
+    var container2 = Column(
       children: [
         SizedBox(
             width: 700,
-            height: 150,
+            height: 200,
             child: Card(
               child: SpectralLineChart.create(_spectralWl, _spectralData,
                   _settings.sumRangeMin, _settings.sumRangeMax),
@@ -310,14 +279,14 @@ class HomeState extends State<Home> {
                 ),
               ),
               Text(
-                _ppfd.ppfd.toStringAsPrecision(4),
+                _ppfd.ppfd.toStringAsFixed(1),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 32,
                   color: Colors.blue.shade600,
                 ),
               ),
-              Text(_unit,
+              Text("\u03bcmol\u30fbm\u207b\u00b2\u30fbs\u207b\u00b9",
                   style: const TextStyle(fontSize: 16)),
             ],
           ),
@@ -337,7 +306,7 @@ SizedBox(
                 ),
               ),
               Text(
-                _ppfd.pfdUv.toStringAsPrecision(4),
+                _ppfd.pfdUv.toStringAsFixed(1),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
@@ -361,7 +330,7 @@ SizedBox(
                 ),
               ),
               Text(
-                _ppfd.pfdB.toStringAsPrecision(4),
+                _ppfd.pfdB.toStringAsFixed(1),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
@@ -385,7 +354,7 @@ SizedBox(
                 ),
               ),
               Text(
-                _peekPower.toStringAsPrecision(4),
+                _ppfd.ppfd.toStringAsFixed(1),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
@@ -411,7 +380,7 @@ SizedBox(
                 ),
               ),
               Text(
-                _ppfd.pfdR.toStringAsPrecision(4),
+                _ppfd.pfdR.toStringAsFixed(1),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
@@ -435,7 +404,7 @@ SizedBox(
                 ),
               ),
               Text(
-                _ppfd.pfdIr.toStringAsPrecision(4),
+                _ppfd.pfdIr.toStringAsFixed(1),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
@@ -459,7 +428,7 @@ SizedBox(
                 ),
               ),
               Text(
-                _ppfd.pfd.toStringAsPrecision(4),
+                _ppfd.pfd.toStringAsFixed(1),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
@@ -486,7 +455,7 @@ SizedBox(
                 ),
               ),
               Text(
-                _ppfd.brRatio.toStringAsPrecision(4),
+                _ppfd.brRatio.toStringAsFixed(2),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
@@ -510,7 +479,7 @@ SizedBox(
                 ),
               ),
               Text(
-                _ppfd.rfrRatio.toStringAsPrecision(4),
+                _ppfd.rfrRatio.toStringAsFixed(1),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
@@ -558,97 +527,7 @@ SizedBox(
       body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
               Widget>[
-                container,
-        // SizedBox(
-        //     width: 700,
-        //     height: 250,
-        //     child: Card(
-        //       child: SpectralLineChart.create(_spectralWl, _spectralData,
-        //           _settings.sumRangeMin, _settings.sumRangeMax),
-        //     )),
-        // SizedBox(
-        //   height: 120,
-        //   width: 700,
-        //   child: Card(
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //       children: <Widget>[
-        //         Text(
-        //           integratedLightIntensityLabel,
-        //           style: const TextStyle(fontSize: 18),
-        //         ),
-        //         Text(
-        //           _irradiance * 1000 < 1
-        //             ? _irradiance.toStringAsExponential(3)
-        //             : _irradiance > 1000
-        //                 ? _irradiance.toStringAsExponential(3)
-        //                 : _irradiance.toStringAsPrecision(4),
-        //           style: TextStyle(
-        //             fontWeight: FontWeight.bold,
-        //             fontSize: 36,
-        //             color: Colors.blue.shade600,
-        //           ),
-        //         ),
-        //         Text(_unit, style: const TextStyle(fontSize: 18)),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        // SizedBox(
-        //   height: 90,
-        //   width: 700,
-        //   child: Card(
-        //     child: Column(
-        //       children: <Widget>[
-        //         const Text(
-        //           "ピーク光強度",
-        //           style: TextStyle(
-        //             fontSize: 16,
-        //           ),
-        //         ),
-        //         Text(
-        //           _peekPower * 1000 < 1
-        //             ? _peekPower.toStringAsExponential(3)
-        //             : _peekPower > 1000
-        //                 ? _peekPower.toStringAsExponential(3)
-        //                 : _peekPower.toStringAsPrecision(4),
-        //           style: TextStyle(
-        //             fontWeight: FontWeight.bold,
-        //             fontSize: 28,
-        //             color: Colors.blue.shade600,
-        //           ),
-        //         ),
-        //         Text(_unit + "\u2219nm\u207B\u00B9",
-        //             style: const TextStyle(fontSize: 16)),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        // SizedBox(
-        //   height: 90,
-        //   width: 700,
-        //   child: Card(
-        //     child: Column(
-        //       children: <Widget>[
-        //         const Text(
-        //           "ピーク波長",
-        //           style: TextStyle(
-        //             fontSize: 16,
-        //           ),
-        //         ),
-        //         Text(
-        //           _peekWavelength.toStringAsFixed(0),
-        //           style: TextStyle(
-        //             fontWeight: FontWeight.bold,
-        //             fontSize: 28,
-        //             color: Colors.blue.shade600,
-        //           ),
-        //         ),
-        //         const Text("nm", style: TextStyle(fontSize: 16)),
-        //       ],
-        //     ),
-        //   ),
-        // ),
+                _settings.measureMode == MeasureMode.irradiance ? container1 : container2,
         Container(
           margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Row(
