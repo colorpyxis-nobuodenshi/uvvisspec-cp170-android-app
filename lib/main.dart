@@ -354,7 +354,7 @@ SizedBox(
                 ),
               ),
               Text(
-                _ppfd.ppfd.toStringAsFixed(1),
+                _ppfd.pfdG.toStringAsFixed(1),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
