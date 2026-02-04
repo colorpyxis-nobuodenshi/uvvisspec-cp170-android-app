@@ -380,7 +380,8 @@ class UvVisSpecDevice {
     for (var i = 0; i < len; i++) {
       sp2[i] = _interporateLagrange(wl2[i], wl, sp);
     }
-
+    sp2[sp2.length - 1] = sp.last;
+    
     return [wl2, sp2];
   }
 
