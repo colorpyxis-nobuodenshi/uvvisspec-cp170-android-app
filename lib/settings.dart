@@ -14,7 +14,7 @@ class SettingsPage extends StatefulWidget {
 class SettingsPageState extends State<SettingsPage> {
   var _wlSumMin = "";
   var _wlSumMax = "";
-  var _wlRangeValues = const RangeValues(0.33, 0.8);
+  var _wlRangeValues = const RangeValues(330, 800);
   var _exposuretime = "";
   var _measureModeSel = MeasureMode.irradiance;
   //var _filterSel = FilterSpectralIntensityType.chlorophyllA;
@@ -29,7 +29,7 @@ class SettingsPageState extends State<SettingsPage> {
     _wlSumMin = settings.sumRangeMin.toInt().toString();
     _wlSumMax = settings.sumRangeMax.toInt().toString();
     _wlRangeValues = RangeValues(
-        settings.sumRangeMin / 1000.0, settings.sumRangeMax / 1000.0);
+        settings.sumRangeMin, settings.sumRangeMax);
     setState(() {
       _exposuretime = settings.deviceExposureTime;
       _measureModeSel = settings.measureMode;
@@ -87,11 +87,11 @@ class SettingsPageState extends State<SettingsPage> {
                                     _measureModeSel = MeasureMode.irradiance;
                                     _unitSel = Unit.w;
                                     _integrateRangeSel = IntegrateLigthIntensityRange.all;
-                                    _wlRangeValues = const RangeValues(0.33, 0.8);
-                                    _wlSumMin = (_wlRangeValues.start * 1000)
+                                    _wlRangeValues = const RangeValues(330, 800);
+                                    _wlSumMin = (_wlRangeValues.start)
                                         .toInt()
                                         .toString();
-                                    _wlSumMax = (_wlRangeValues.end * 1000)
+                                    _wlSumMax = (_wlRangeValues.end)
                                         .toInt()
                                         .toString();
                                     // _filterSel =
@@ -108,13 +108,13 @@ class SettingsPageState extends State<SettingsPage> {
                                     _unitSel = Unit.mol;
                                     _integrateRangeSel = IntegrateLigthIntensityRange.custom;
                                     _wlRangeValues =
-                                                  const RangeValues(0.33, 0.8);
+                                                  const RangeValues(330, 800);
                                     _wlSumMin =
-                                        (_wlRangeValues.start * 1000)
+                                        (_wlRangeValues.start)
                                             .toInt()
                                             .toString();
                                     _wlSumMax =
-                                        (_wlRangeValues.end * 1000)
+                                        (_wlRangeValues.end)
                                             .toInt()
                                             .toString();
                                     // _filterSel =
@@ -138,11 +138,11 @@ class SettingsPageState extends State<SettingsPage> {
                               groupValue: _integrateRangeSel,
                               onChanged: (value) {
                                 setState(() {
-                                  _wlRangeValues = const RangeValues(0.33, 0.8);
-                                  _wlSumMin = (_wlRangeValues.start * 1000)
+                                  _wlRangeValues = const RangeValues(330, 800);
+                                  _wlSumMin = (_wlRangeValues.start)
                                       .toInt()
                                       .toString();
-                                  _wlSumMax = (_wlRangeValues.end * 1000)
+                                  _wlSumMax = (_wlRangeValues.end)
                                       .toInt()
                                       .toString();
                                   _integrateRangeSel =
@@ -191,13 +191,13 @@ class SettingsPageState extends State<SettingsPage> {
                                           onPressed: () {
                                             setState(() {
                                               _wlRangeValues =
-                                                  const RangeValues(0.33, 0.8);
+                                                  const RangeValues(330, 800);
                                               _wlSumMin =
-                                                  (_wlRangeValues.start * 1000)
+                                                  (_wlRangeValues.start)
                                                       .toInt()
                                                       .toString();
                                               _wlSumMax =
-                                                  (_wlRangeValues.end * 1000)
+                                                  (_wlRangeValues.end)
                                                       .toInt()
                                                       .toString();
                                               // _integrateRangeSel =
@@ -254,7 +254,7 @@ class SettingsPageState extends State<SettingsPage> {
                     showLicensePage(
                       context: context,
                       applicationName: "植物用分光放射照度計CP170",
-                      applicationVersion: "1.0.0",
+                      applicationVersion: "1.0.1",
                       // applicationIcon: MyAppIcon(),
                       applicationLegalese:
                           "\u{a9} 2023 NOBUO ELECTRONICS CO., LTD.",

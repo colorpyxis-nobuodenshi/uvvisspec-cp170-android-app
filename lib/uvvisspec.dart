@@ -463,31 +463,69 @@ class UvVisSpecDevice {
     }
     return value;
   }
+double _interporateLagrange(double x, List<double> xa, List<double> ya) {
+  int t1 = 1;
 
-  double _interporateLagrange(double x, List<double> xa, List<double> ya) {
-    var t1 = 1;
-
-    for (var i = 1; i < xa.length - 2; i++) {
-      t1 = i;
-      if (xa[i] > x) {
-        break;
-      }
+  // x がどの区間にあるか探索
+  for (int i = 1; i < xa.length - 2; i++) {
+    t1 = i;
+    if (xa[i] >= x) {  // >= に変更で境界安定
+      break;
     }
-    var xx = [xa[t1 - 1], xa[t1], xa[t1 + 1], xa[t1 + 2]];
-    var yy = [ya[t1 - 1], ya[t1], ya[t1 + 1], ya[t1 + 2]];
-    var p = 0.0;
-    var s = 0.0;
-    for (var j = 0; j < xx.length; j++) {
-      p = yy[j];
-      for (var i = 0; i < xx.length; i++) {
-        if (i == j) continue;
-        p *= (xx[j] - xx[i]) == 0.0 ? 0.0 : (x - xx[i]) / (xx[j] - xx[i]);
-      }
-      s += p;
-    }
-    if (s < 0.0) {
-      s = 0.0;
-    }
-    return s;
   }
+
+  // 左端
+  if (t1 <= 1) {
+    return _lagrange2(
+      x,
+      [xa[0], xa[1], xa[2]],
+      [ya[0], ya[1], ya[2]],
+    );
+  }
+
+  // 右端
+  if (t1 >= xa.length - 3) {
+    int n = xa.length;
+    return _lagrange2(
+      x,
+      [xa[n - 3], xa[n - 2], xa[n - 1]],
+      [ya[n - 3], ya[n - 2], ya[n - 1]],
+    );
+  }
+
+  // 中央部：3次ラグランジュ
+  return _lagrange3(
+    x,
+    [xa[t1 - 1], xa[t1], xa[t1 + 1], xa[t1 + 2]],
+    [ya[t1 - 1], ya[t1], ya[t1 + 1], ya[t1 + 2]],
+  );
+}
+
+// 2次ラグランジュ補間
+double _lagrange2(double x, List<double> xx, List<double> yy) {
+  double s = 0.0;
+  for (int j = 0; j < 3; j++) {
+    double p = yy[j];
+    for (int i = 0; i < 3; i++) {
+      if (i == j) continue;
+      p *= (x - xx[i]) / (xx[j] - xx[i]);
+    }
+    s += p;
+  }
+  return s < 0.0 ? 0.0 : s;
+}
+
+// 3次ラグランジュ補間
+double _lagrange3(double x, List<double> xx, List<double> yy) {
+  double s = 0.0;
+  for (int j = 0; j < 4; j++) {
+    double p = yy[j];
+    for (int i = 0; i < 4; i++) {
+      if (i == j) continue;
+      p *= (x - xx[i]) / (xx[j] - xx[i]);
+    }
+    s += p;
+  }
+  return s < 0.0 ? 0.0 : s;
+}
 }
