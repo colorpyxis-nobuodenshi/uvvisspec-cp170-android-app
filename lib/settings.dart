@@ -124,15 +124,17 @@ class SettingsPageState extends State<SettingsPage> {
                       ],
                     ),
                   ),
+                  Visibility(
+                                visible: _measureModeSel == MeasureMode.irradiance,
+                            child: 
                   Card(
                     child: Column(
                       children: <Widget>[
                         const Text("測定波長範囲"),
                         Column(
                           children: <Widget>[
-                             Visibility(
-                                visible: _measureModeSel == MeasureMode.irradiance,
-                            child : RadioListTile(
+                             
+                            RadioListTile(
                               title: const Text("330-800nm"),
                               value: IntegrateLigthIntensityRange.all,
                               groupValue: _integrateRangeSel,
@@ -149,7 +151,7 @@ class SettingsPageState extends State<SettingsPage> {
                                       IntegrateLigthIntensityRange.all;
                                 });
                               },
-                            )),
+                            ),
                             RadioListTile(
                               title: const Text("カスタム"),
                               value: IntegrateLigthIntensityRange.custom,
@@ -162,8 +164,8 @@ class SettingsPageState extends State<SettingsPage> {
                               },
                             ),
                             Visibility(
-                                visible: _integrateRangeSel ==
-                                    IntegrateLigthIntensityRange.custom,
+                                visible:
+      _integrateRangeSel == IntegrateLigthIntensityRange.custom,
                                 child: Column(
                                   children: <Widget>[
                                     Row(
@@ -246,7 +248,7 @@ class SettingsPageState extends State<SettingsPage> {
                         )
                       ],
                     ),
-                  ),
+                  )),
                    Card(
                 child: ListTile(
                   title: const Text("このアプリの情報について"),
