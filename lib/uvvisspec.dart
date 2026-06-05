@@ -378,9 +378,9 @@ class UvVisSpecDevice {
     var wl2 = List.generate(len, (index) => (index + wlMin).toDouble());
     var sp2 = List.generate(len, (index) => 0.0);
     for (var i = 0; i < len; i++) {
-      sp2[i] = _interporateLagrange(wl2[i], wl, sp);
+      sp2[i] = _interporateSpline(wl2[i], wl, sp);
     }
-    sp2[sp2.length - 1] = sp.last;
+    //sp2[sp2.length - 1] = sp.last;
     
     return [wl2, sp2];
   }
